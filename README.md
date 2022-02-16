@@ -1,3 +1,3 @@
 # Workshop-vehicle-management--system
 
-![Workshop-vehicle-management--system](/images/github-logo.png)
+![Workshop-vehicle-management--system](/images/dashboard.png)
