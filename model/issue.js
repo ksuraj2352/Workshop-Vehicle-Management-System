@@ -5,17 +5,16 @@ const issueSchema = new mongoose.Schema(
   {
     registrationNumber: {
       type: String,
-      unique: true,
       index : true,
       required: true,
-      minlength: 8,
+      minlength: 9,
       maxlength: 10,
       trim: true,
       uppercase: true,
     },
     carBrand: {
       type: String,
-      minlength: 3,
+      minlength: 2,
       maxlength: 255,
       required: true,
     },
@@ -40,11 +39,10 @@ const issueSchema = new mongoose.Schema(
     // },
     engineNumber: {
       type: String,
-      minlength: 10,
-      maxlength: 255,
+      minlength: 11,
+      maxlength: 11,
       required: true,
       trim: true,
-      unique : true
     },
     date: { type: String, required: true, trim: true },
     // do the date validation in frontend side
@@ -75,10 +73,10 @@ function validateIssue(issueDetail) {
       .required()
       .trim()
       .uppercase()
-      .min(8)
+      .min(9)
       .max(10),
     carBrand: Joi.string()
-      .min(3)
+      .min(2)
       .max(255)
       .required(),
     carModel: Joi.string()
@@ -94,8 +92,8 @@ function validateIssue(issueDetail) {
       .required()
       .trim()
       .uppercase()
-      .min(10)
-      .max(255),
+      .min(11)
+      .max(11),
     date: Joi.string()
       .required()
       .trim(),

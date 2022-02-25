@@ -55,10 +55,21 @@ router.post("/", [verifyAuthorization], async (req, res) => {
 // LIST ALL ISSUES
 
 router.get("/", [verifyAuthorization], async (req, res) => {
+  // const limit = req.query.limit || null
+  const pageNumber = req.query.page;
+  const pageSize = req.query.size;
   const user = await User.findById(req.user._id);
-  const allIssues = await Issue.find().select("-problemDescription");
+  const allIssues = await Issue.find()
+    .select("-problemDescription")
+    .sort({date : -1})
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    
+
+  const countTotalIssues =  await Issue.find().count()
+  const data = {allIssues,countTotalIssues}
   if (user) {
-    res.send(allIssues);
+    res.send(data);
   } else {
     res.send("Something Wenr Wrong , Try Login Again.");
   }
@@ -80,8 +91,8 @@ router.put("/status/:id", [verifyAuthorization], async (req, res) => {
             if (!user) {
               res.send("no issue found for this user");
             } else if (user) {
-              issue.status = "completed"
-              issue.save()
+              issue.status = "completed";
+              issue.save();
               res.send(user);
             }
           }

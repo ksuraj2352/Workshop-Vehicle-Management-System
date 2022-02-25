@@ -19,12 +19,14 @@ router.post("/", async (req, res) => {
 
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(400).send("Invalid Email And Password.");
+    return res.status(400).send({status : false ,errorType : "Invalid Email And Password."});
   }
 
   const checkPassword = await bcrypt.compare(req.body.password, user.password);
   if (!checkPassword) {
-    return res.status(400).send("Invalid Email And Password.");
+    return res
+      .status(400)
+      .send({ status: false, errorType: "Invalid Email And Password." });
   }
 
   const token = jwt.sign({ _id: user._id, isAdmin : user.isAdmin }, secretToken, {expiresIn: "30m"} );
@@ -34,7 +36,7 @@ router.post("/", async (req, res) => {
   
 
   // res.send({ token, ...token2,...isHere._doc });
-  res.header('x-auth-token', token).send({status : true, ...token2 });
+  res.header('x-auth-token', token).send({status : true, ...token2 ,token });
 });
 
 function validateUser(user) {
